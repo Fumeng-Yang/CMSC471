@@ -1,0 +1,336 @@
+---
+title: "Lecture on Statistics & Uncertainty"
+output: 
+  html_document: 
+    toc: true
+    df_print: kable
+  # md_document:
+  #  variant: markdown_github
+author: 'Fumeng Yang'
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+---
+
+This document includes the code for generating the figures in the lecture.
+
+
+# Setup
+
+```{r setup}
+library(tidyverse) # tibble
+library(ggdist) # plot distributions
+library(rstatix) # anova test
+SD = 1 # assume a standard deviation of 1
+```
+
+# One-tailed vs two-tailed
+
+```{r}
+samples = tibble(x = qnorm(ppoints(1000), mean = 0, sd = 1))
+```
+
+
+```{r}
+ggplot(samples, aes(x = x)) +
+  stat_slab(aes(fill = after_stat(x > qnorm(.95)))) +
+  scale_y_continuous(expand = c(0,0), breaks = NULL) + 
+  scale_fill_manual(values=c('#dddddd', '#00A2FF')) + 
+  theme_classic() + theme(legend.position = 'none') + ylab('')
+```
+
+
+```{r}
+ggplot(samples, aes(x = x)) +
+  stat_slab(aes(fill = after_stat(x < qnorm(.05)))) +
+  scale_y_continuous(expand = c(0,0), breaks = NULL) + 
+  scale_fill_manual(values=c('#dddddd', '#00A2FF')) + 
+  theme_classic() + theme(legend.position = 'none') + ylab('')
+```
+
+```{r}
+ggplot(samples, aes(x = x)) +
+  stat_slab(aes(fill = after_stat(x > qnorm(.025) & x < qnorm(.975)))) +
+  scale_y_continuous(expand = c(0,0), breaks = NULL) + 
+  scale_fill_manual(values=c('#00A2FF', '#dddddd')) + 
+  theme_classic() + theme(legend.position = 'none') + ylab('')
+```
+
+# Fisher 
+
+In Fisher's approach, we draw a normal distribution and highlight the 5% of the right tail. 
+
+```{r}
+# sample from the distribution
+data = tibble(x = qnorm(ppoints(1000), mean = 0, sd = SD))
+# determine where the point is
+p95 = qnorm(.95, mean = 0, sd = 1)
+```
+
+
+```{r}
+data %>% 
+  ggplot(aes(x = x)) +
+  stat_slab(aes(fill = after_stat(x > p95))) +
+  theme_classic() + 
+  scale_y_continuous(expand = c(0,0), breaks = NULL) + 
+  scale_fill_manual(values=c('#dddddd', '#00A2FF')) + 
+  ylab('') 
+```
+
+# Neyman-Pearson
+
+In Neyman-Pearson's approach, we need to first determine alpha and beta (1 - power). Usually, .8 is high power. .9 or above is very large and may need a very large sample.
+
+```{r}
+alpha =.05
+power = 0.8
+```
+
+For plotting purposes, we use a standard deviation of 1. However, this should be estimated from the data we later collected.
+
+We assume the H_main has a mean of 0. Then we calculate the other distribution.
+
+```{r}
+qnorm(p = 1 - power, lower.tail = FALSE, sd = SD)
+mean2 = qnorm(p = alpha, lower.tail = FALSE, sd = SD) + qnorm(p = 1 - power, lower.tail = FALSE, sd = SD)
+pnorm(q = qnorm(p = 1 - power, lower.tail = FALSE), mean=mean2, sd = SD)
+
+mean2
+```
+
+Draw some samples
+
+```{r}
+data2 = tibble(x = qnorm(ppoints(1000), mean = mean2, sd = SD),
+               dist = rep('HA', 1000))
+
+data1 = tibble(x = qnorm(ppoints(1000), mean = 0, sd = SD),
+               dist = rep('HM', 1000))
+```
+
+The distribution in the main hypothesis. 
+
+```{r}
+  ggplot() +
+  stat_slab(data = data1, mapping = aes(x = x, fill = after_stat(x > qnorm(.05, lower.tail = FALSE, sd = SD)))) +
+  theme_classic() + 
+  geom_vline(xintercept = 0) + 
+  scale_y_continuous(breaks = NULL) + 
+  scale_x_continuous(limits = c(-4, 6)) +
+  scale_fill_manual(values=c('#aaaaaa', '#00A2FF')) + 
+  ylab('') + xlab('') + theme(legend.position = 'none') 
+```
+
+The distribution in the alternative hypothesis. 
+
+```{r}
+  ggplot() +
+  stat_slab(data = data2, mapping = aes(x = x, fill = after_stat(x < qnorm(.2, lower.tail = TRUE, mean = mean2, sd = SD)))) +
+   geom_vline(xintercept = mean2) + 
+  theme_classic() + 
+  scale_y_continuous(breaks =NULL) + 
+  scale_x_continuous(limits = c(-4, 6)) +
+  scale_fill_manual(values = c('#aaaaaa', '#00A2FF')) + 
+  ylab('') + xlab('') + theme(legend.position = 'none') 
+```
+
+Put them together
+
+
+```{r}
+  ggplot() +
+  stat_slab(data = data1, mapping = aes(x = x, fill = after_stat(x > qnorm(.05, lower.tail = FALSE, sd = SD))), alpha = .5) +
+  stat_slab(data = data2, mapping = aes(x = x, fill = after_stat(x < qnorm(.2, lower.tail = TRUE, mean = mean2, sd = SD))), alpha = .5) +
+  theme_classic() + 
+  scale_y_continuous(breaks =NULL) + 
+  scale_x_continuous(limits = c(-4, 6)) + 
+  scale_fill_manual(values = c('#aaaaaa', '#00A2FF')) + 
+  ylab('') + theme(legend.position = 'none')
+```
+
+
+# P dance
+
+First, we show what happen if we increase the sample size
+
+```{r}
+set.seed(12345) # for reproducibility
+samples = rnorm(15000, mean = 0, sd = 1) # draw lots of samples
+```
+
+```{r}
+head(samples)
+```
+
+We write a loop to show p values under different sample sizes.
+
+```{r}
+
+n = 50 # start with 50
+pvalues = c() # a container
+ns = c()
+repeat{
+  test = t.test(samples[1:n]) 
+  pvalues = c(pvalues, test$p.value) # t-test, compare to 0
+  ns = c(ns, n)
+  if(n > length(samples))
+    break
+  n = n+100
+}
+
+```
+
+```{r}
+pvalues
+```
+
+
+```{r}
+ggplot(tibble(p=pvalues)) +
+  theme_classic() + 
+  geom_point(aes(x=p), y=0) +
+  geom_vline(xintercept=0.05) 
+```
+
+```{r}
+ggplot(tibble(p=pvalues, n = ns)) +
+  theme_classic() + 
+  geom_point(aes(y=p, x=n)) +
+  geom_hline(yintercept=0.05) 
+```
+
+Next, we show p values's changes in repeated experiments
+
+```{r}
+
+n = 50
+pvalues = c()
+means = c()
+
+for(i in 1:20){
+  set.seed(i) # for reproducibility
+  samples = rnorm(n, mean = 0, sd = 1)
+  means = c(means, mean(samples))
+  test = t.test(samples) # t-test
+  pvalues = c(pvalues, test$p.value) # store p values
+}
+
+```
+
+```{r}
+pvalues
+```
+
+Plot p values in these repeated experiments
+
+```{r}
+ggplot(tibble(p=pvalues)) +
+  theme_classic() + 
+  geom_point(aes(x=p), y=0) +
+  geom_vline(xintercept=0.05)
+```
+
+Plot means in these repeated experiments
+
+```{r}
+ggplot() +
+  # stat_slab(data=tibble(x = qnorm(ppoints(1000), sd = .3)), mapping=aes(x=x), alpha = .5) + 
+  theme_classic() + 
+  geom_point(data=tibble(mu=means), mapping=aes(x=mu), y=0) +
+  geom_vline(xintercept=0)
+```
+
+
+
+
+# t-test
+
+```{r}
+data = 
+  rbind(
+    tibble(y=rnorm(20, mean = 10, sd=1), group = 'A'),
+    tibble(y=rnorm(20, mean = 11, sd=1), group = 'B'))
+```
+
+test and regression: note that the mean difference is the slope.
+
+```{r}
+t.test(data %>% filter(group=='A') %>% pull(y), 
+       data %>% filter(group=='B') %>% pull(y))
+
+lm(y ~ group, data = data)
+
+```
+
+
+```{r fig.height=5, fig.width=3}
+data %>% 
+ggplot() + 
+  geom_point(aes(x = group, y = y)) +
+  theme_classic() +
+  coord_cartesian(ylim=c(0,15))
+```
+
+# One-way ANOVA
+
+```{r}
+data2 = 
+  rbind(
+    tibble(y=rnorm(20, mean = 10, sd=1), group = 'A'),
+    tibble(y=rnorm(20, mean = 11, sd=1), group = 'B'),
+    tibble(y=rnorm(20, mean = 11, sd=1), group = 'C'))
+```
+
+the test
+
+```{r}
+summary(aov(y ~ group, data = data2))
+```
+
+the regression version
+
+```{r}
+anova(lm(y ~ group, data = data2))
+```
+
+The test results are the same.
+
+
+```{r fig.height=5, fig.width=3}
+data2 %>% 
+ggplot() + 
+  geom_point(aes(x = group, y = y)) +
+  theme_classic() +
+  coord_cartesian(ylim=c(0,15))
+```
+
+# Two-way ANOVA
+
+
+```{r}
+data3 = 
+  rbind(
+    tibble(y=rnorm(20, mean = 10, sd=1), dose = 1, cond = 'control'),
+    tibble(y=rnorm(20, mean = 11, sd=1), dose = 2, cond = 'control'),
+    tibble(y=rnorm(20, mean = 11, sd=1), dose = 3, cond = 'control'),
+    tibble(y=rnorm(20, mean = 11.2, sd=1), dose = 1, cond = 'treatment'),
+    tibble(y=rnorm(20, mean = 10.8, sd=1), dose = 2, cond = 'treatment'),
+    tibble(y=rnorm(20, mean = 11.9, sd=1), dose = 3, cond = 'treatment'))
+```
+
+
+```{r}
+summary(aov(y ~ dose*cond, data = data3))
+```
+
+
+```{r}
+anova(lm(y ~ dose + cond + dose:cond, data = data3))
+```
+
+the regression version
+
+```{r}
+anova(lm(y ~ group, data = data2))
+```
+
+Very similar results
