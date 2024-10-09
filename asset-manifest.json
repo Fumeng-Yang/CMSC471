@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/CMSC471/static/css/main.194d39a3.css",
-    "main.js": "/CMSC471/static/js/main.6945fa03.js",
+    "main.css": "/CMSC471/static/css/main.c40d0a6e.css",
+    "main.js": "/CMSC471/static/js/main.a609d6e0.js",
     "static/js/453.f17112b1.chunk.js": "/CMSC471/static/js/453.f17112b1.chunk.js",
     "static/media/llm-papers.png": "/CMSC471/static/media/llm-papers.1e904e37698b732a4258.png",
     "static/media/forecasts2020.png": "/CMSC471/static/media/forecasts2020.0491450ff94e924c824a.png",
     "static/media/ggdist.png": "/CMSC471/static/media/ggdist.9a753193af3d3a34e7a9.png",
     "static/media/huy.png": "/CMSC471/static/media/huy.6e6762fa979ec6d190ab.png",
     "index.html": "/CMSC471/index.html",
-    "main.194d39a3.css.map": "/CMSC471/static/css/main.194d39a3.css.map",
-    "main.6945fa03.js.map": "/CMSC471/static/js/main.6945fa03.js.map",
+    "main.c40d0a6e.css.map": "/CMSC471/static/css/main.c40d0a6e.css.map",
+    "main.a609d6e0.js.map": "/CMSC471/static/js/main.a609d6e0.js.map",
     "453.f17112b1.chunk.js.map": "/CMSC471/static/js/453.f17112b1.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.194d39a3.css",
-    "static/js/main.6945fa03.js"
+    "static/css/main.c40d0a6e.css",
+    "static/js/main.a609d6e0.js"
   ]
 }
