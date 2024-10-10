@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/CMSC471/static/css/main.c40d0a6e.css",
-    "main.js": "/CMSC471/static/js/main.e26cff5e.js",
+    "main.js": "/CMSC471/static/js/main.0f70e7df.js",
     "static/js/453.f17112b1.chunk.js": "/CMSC471/static/js/453.f17112b1.chunk.js",
     "static/media/llm-papers.png": "/CMSC471/static/media/llm-papers.1e904e37698b732a4258.png",
     "static/media/forecasts2020.png": "/CMSC471/static/media/forecasts2020.0491450ff94e924c824a.png",
@@ -9,11 +9,11 @@
     "static/media/huy.png": "/CMSC471/static/media/huy.6e6762fa979ec6d190ab.png",
     "index.html": "/CMSC471/index.html",
     "main.c40d0a6e.css.map": "/CMSC471/static/css/main.c40d0a6e.css.map",
-    "main.e26cff5e.js.map": "/CMSC471/static/js/main.e26cff5e.js.map",
+    "main.0f70e7df.js.map": "/CMSC471/static/js/main.0f70e7df.js.map",
     "453.f17112b1.chunk.js.map": "/CMSC471/static/js/453.f17112b1.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.c40d0a6e.css",
-    "static/js/main.e26cff5e.js"
+    "static/js/main.0f70e7df.js"
   ]
 }
