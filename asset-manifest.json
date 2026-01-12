@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/CMSC471/static/css/main.9746e4db.css",
-    "main.js": "/CMSC471/static/js/main.30a2c2b0.js",
+    "main.css": "/CMSC471/static/css/main.2da7adb7.css",
+    "main.js": "/CMSC471/static/js/main.e200e70e.js",
     "static/js/453.583fa1a4.chunk.js": "/CMSC471/static/js/453.583fa1a4.chunk.js",
     "static/media/header.svg": "/CMSC471/static/media/header.a30d545eb44b991cdf61.svg",
     "static/media/FumengYang-2024-2-1.png": "/CMSC471/static/media/FumengYang-2024-2-1.7267a99aaeba88fa449b.png",
     "static/media/Taehyun-Yang.png": "/CMSC471/static/media/Taehyun-Yang.b900f6a399565592f079.png",
     "static/media/Zhongzheng-Xu.png": "/CMSC471/static/media/Zhongzheng-Xu.5b196e2965c3e0bb085d.png",
     "index.html": "/CMSC471/index.html",
-    "main.9746e4db.css.map": "/CMSC471/static/css/main.9746e4db.css.map",
-    "main.30a2c2b0.js.map": "/CMSC471/static/js/main.30a2c2b0.js.map",
+    "main.2da7adb7.css.map": "/CMSC471/static/css/main.2da7adb7.css.map",
+    "main.e200e70e.js.map": "/CMSC471/static/js/main.e200e70e.js.map",
     "453.583fa1a4.chunk.js.map": "/CMSC471/static/js/453.583fa1a4.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.9746e4db.css",
-    "static/js/main.30a2c2b0.js"
+    "static/css/main.2da7adb7.css",
+    "static/js/main.e200e70e.js"
   ]
 }
