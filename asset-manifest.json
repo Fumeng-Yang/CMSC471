@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/CMSC471/static/css/main.6fd9f44d.css",
-    "main.js": "/CMSC471/static/js/main.2ae77d51.js",
+    "main.js": "/CMSC471/static/js/main.d5e32580.js",
     "static/js/453.583fa1a4.chunk.js": "/CMSC471/static/js/453.583fa1a4.chunk.js",
     "static/media/header.svg": "/CMSC471/static/media/header.a30d545eb44b991cdf61.svg",
     "static/media/FumengYang-2024-2-1.png": "/CMSC471/static/media/FumengYang-2024-2-1.7267a99aaeba88fa449b.png",
@@ -9,11 +9,11 @@
     "static/media/Zhongzheng-Xu.png": "/CMSC471/static/media/Zhongzheng-Xu.5b196e2965c3e0bb085d.png",
     "index.html": "/CMSC471/index.html",
     "main.6fd9f44d.css.map": "/CMSC471/static/css/main.6fd9f44d.css.map",
-    "main.2ae77d51.js.map": "/CMSC471/static/js/main.2ae77d51.js.map",
+    "main.d5e32580.js.map": "/CMSC471/static/js/main.d5e32580.js.map",
     "453.583fa1a4.chunk.js.map": "/CMSC471/static/js/453.583fa1a4.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.6fd9f44d.css",
-    "static/js/main.2ae77d51.js"
+    "static/js/main.d5e32580.js"
   ]
 }
